@@ -1,2 +1,2 @@
-# micro-fame-starter
-Starter project for micro-fame 
+# micro-fame-starter-mongoose
+Starter project for micro-fame with mongoose 
