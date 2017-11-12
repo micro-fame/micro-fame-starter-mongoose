@@ -1,6 +1,6 @@
 const Promise = require('bluebird');
 const mongoose = require('mongoose');
-const { registerConnection, Model, schemax } = require('../lib/DSModelRegistry');
+const { registerConnection } = require('../lib/DSModelRegistry');
 mongoose.Promise = Promise;
 module.exports = async function (app) {
   const con = await mongoose.connect('mongodb://127.0.0.1/test', {

@@ -1,41 +1,46 @@
 const { RestService, Remote } = require('micro-fame');
+const BaseService = require('./BaseService');
 
-@RestService({
-  endpoint: 'no-user'
-})
-class User {
+@RestService()
+class User extends BaseService {
   @Remote({
     path: '/',
     method: 'get'
   })
   async index() {
-    return 'index';
-  }
-
-  @Remote({
-    path: '/getName',
-    method: 'get'
-  })
-  async getName() {
-    return 'hello';
-  }
-
-  @Remote({
-    path: '/get-with-params/:name/:text'
-  })
-  async getWithParams(name, text) {
+    const { User } = this.models();
+    const u = await User.findOne();
     return {
-      name,
-      text
+      fn: u.getFullName(),
+      fng: u.fullName
     };
   }
 
   @Remote({
-    path: '/getOptionalParam(/:text)',
-    method: 'get'
+    path: '/save/:fn/:ln'
   })
-  async getOptionalParam(text) {
-    return { text: text };
+  async save(fn, ln) {
+    const { User } = this.models();
+    const u = new User({
+      firstName: fn,
+      lastName: ln,
+      t: 9,
+      obj: {
+        key1: fn,
+        key2: ln,
+        key3: fn + ln
+      }
+    });
+    return await u.save();
+  }
+
+  @Remote({
+    path: '/update/:fn'
+  })
+  async update(fn) {
+    const { User } = this.models();
+    return await User.findOneAndUpdate({ firstName: fn },
+      { $set: { lastName: 'lastName1' } }, { new: true });
   }
 
   @Remote({
