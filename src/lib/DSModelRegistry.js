@@ -27,3 +27,27 @@ exports.Model = function modelDecorator(schema, options = {}) {
     mongoose.model(Class.name, schemaInstance);
   };
 };
+
+const runValidatorsPlugin = function(schema, options) {
+  schema.pre('findOneAndUpdate', function(next) {
+    this.options.runValidators = true;
+    next();
+  });
+
+  schema.pre('update', function(next) {
+    this.options.runValidators = true;
+    next();
+  });
+
+  schema.pre('updateMany', function(next) {
+    this.options.runValidators = true;
+    next();
+  });
+
+  schema.pre('updateOne', function(next) {
+    this.options.runValidators = true;
+    next();
+  });
+};
+
+mongoose.plugin(runValidatorsPlugin);

@@ -22,14 +22,18 @@ class User extends BaseService {
   async save(fn, ln) {
     const { User } = this.models();
     const u = new User({
-      firstName: fn,
+      firstName: 1,
       lastName: ln,
       t: 9,
       obj: {
         key1: fn,
         key2: ln,
         key3: fn + ln
-      }
+      },
+      arr: [{
+        arr1: fn,
+        arr2: 121
+      }]
     });
     return await u.save();
   }
@@ -40,46 +44,8 @@ class User extends BaseService {
   async update(fn) {
     const { User } = this.models();
     return await User.findOneAndUpdate({ firstName: fn },
-      { $set: { lastName: 'lastName1' } }, { new: true });
+      { $set: { lastName: 'lastName1', no: '34gg3' } }, { runValidators: true, new: true });
   }
-
-  @Remote({
-    path: '/paramsFromQuery',
-    args: {
-      text: ({ query: { text } }) => text,
-      number: ({ query: { number } }) => number
-    }
-  })
-  async paramsFromQuery(text, number) {
-    return { text, number };
-  }
-
-  @Remote({
-    path: '/mixParams/:name',
-    method: 'get',
-    args: {
-      name: ({ params: { name } }) => name,
-      text: ({ query: { text } }) => text,
-      number: ({ query: { number } }) => number
-    }
-  })
-  async mixParams(name, text, number) {
-    return { name, text, number };
-  }
-
-  @Remote({
-    path: '/mixParams/:name',
-    method: 'post',
-    args: {
-      name: ({ params: { name } }) => name,
-      text: ({ query: { text } }) => text,
-      number: ({ body: { number } }) => number
-    }
-  })
-  async mixParamsQB(name, text, number) {
-    return { name, text, number };
-  }
-
 };
 
 module.exports = User;
